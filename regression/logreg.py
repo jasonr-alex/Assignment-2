@@ -116,6 +116,8 @@ class BaseRegressor():
         axs[1].set_ylabel('Val Loss')
         fig.tight_layout()
         
+import sklearn.linear_model 
+from sklearn.linear_model import LogisticRegression
 
 # import required modules
 class LogisticRegression(BaseRegressor):
