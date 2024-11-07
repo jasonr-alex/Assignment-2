@@ -137,7 +137,10 @@ class LogisticRegression(BaseRegressor):
         # This python built-in function will allow you to access methods from the class you are inheriting from!
         # This is this class will be able to use train_model and plot_loss_history! :) 
         super().__init__(num_feats, learning_rate, tol, max_iter, batch_size)
-        
+    
+    def sigmoid(self, z):
+            return 1 / (1 + np.exp(-z))
+    
     def calculate_gradient(self, X, y) -> np.ndarray:
         """
         TODO: Write function to calculate gradient of the
@@ -152,9 +155,10 @@ class LogisticRegression(BaseRegressor):
         Returns: 
             gradients for a given loss function type np.ndarray (n-dimensional array)
         """
-        
-        
-        pass
+        predictions = self.sigmoid(X @ self.weights) # Calculate the model's predictions by applying the sigmoid function.
+        errors = predictions - y # This computes the difference between the predictions and actual labels.
+        gradient = X.T @ errors / len(y) # Calculates the gradient of the loss function by the dot product.
+        return gradient # Simply returns the computed gradient, used to update the weights. 
     
     def loss_function(self, X, y) -> float:
         """
@@ -170,7 +174,11 @@ class LogisticRegression(BaseRegressor):
         Returns: 
             average loss 
         """
-        pass
+        y_pred = self.sigmoid(X @ self.weights) # Calculates the predicted probabilities for each sample.
+        y_pred = np.clip(y_pred, 1e-10, 1 - 1e-10) # This clips probabilites to avoid the possbility of log(0) errors.
+        losses = - (y * np.log(y_pred) + (1 - y) * np.log(1 - y_pred)) # Calculates the cross-entropy loss for each sample. 
+        average_loss = np.mean(losses) # Averages the loss across all samples.
+        return average_loss # Returns the average loss across all samples in the data. 
     
     def make_prediction(self, X) -> np.array:
         """
