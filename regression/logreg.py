@@ -192,8 +192,9 @@ class LogisticRegression(BaseRegressor):
         Returns: 
             y_pred for given X
         """
-
-        pass
+        linear_combination = X @ self.weights # The dot product of X and self.weights where X has shape and self.weights has shape.
+        y_pred = self.sigmoid(linear_combination) # The sigmoid function to the linear combination to get probabilities. 
+        return y_pred # Again, returns the probabilities. 
 
 
 
